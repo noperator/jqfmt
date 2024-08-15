@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"os"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
-
 	"github.com/noperator/jqfmt"
+	log "github.com/sirupsen/logrus"
 )
 
 func assertErrorToNilf(message string, err error) {
@@ -18,7 +18,6 @@ func assertErrorToNilf(message string, err error) {
 }
 
 func main() {
-
 	// funcsStr := flag.String("fn", "", "functions")
 	opsStr := flag.String("op", "", "operators")
 	obj := flag.Bool("ob", false, "objects")
@@ -28,13 +27,14 @@ func main() {
 	verbose := flag.Bool("v", false, "verbose")
 	// noHang := flag.Bool("nh", false, "no hanging indent")
 	flag.Parse()
+	var from_stdin bool = false
 
 	if *verbose {
 		log.SetLevel(log.DebugLevel)
 	}
 
 	if *file == "" {
-		*file = "/dev/stdin"
+		from_stdin = true
 	}
 
 	// var funcs []string
@@ -61,13 +61,15 @@ func main() {
 	})
 	assertErrorToNilf("invalid config: %v", err)
 
-	// Read in program.
-	jqBytes, err := ioutil.ReadFile(*file)
+	var jqBytes []byte
+	if from_stdin {
+		jqBytes, err = io.ReadAll(os.Stdin)
+	} else {
+		jqBytes, err = os.ReadFile(*file)
+	}
 	assertErrorToNilf("could not read file: %v", err)
 	jqStr := string(jqBytes)
-
 	jqStrFmt, err := jqfmt.DoThing(jqStr, cliCfg)
 	assertErrorToNilf("could not format jq: %v", err)
-
 	fmt.Print(jqStrFmt)
 }
