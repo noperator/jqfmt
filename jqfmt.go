@@ -134,27 +134,39 @@ func DoThing(jqStr string, cfg_ JqFmtCfg) (string, error) {
 	queries = map[string]int{}
 	indented = map[int]int{}
 
-	// Read in ~/.jq.
-	usr, err := user.Current()
-	if err != nil {
-		return "", fmt.Errorf("could not get user: %w", err)
-	}
-	dir := usr.HomeDir
-	file := filepath.Join(dir, ".jq")
-	modJqBytes, err := ioutil.ReadFile(file)
-	if err != nil {
-		return "", fmt.Errorf("could not read file: %w", err)
-	}
-	modJqStr := string(modJqBytes)
-	modQ, err := strToQuery(modJqStr)
-	if err != nil {
-		return "", fmt.Errorf("could not convert jq to query: %w", err)
-	}
-	_ = modQ.String()
-	// modFuncs = funcs
-	// modFuncDefs = funcDefs
-	// funcs = []string{}
-	// funcDefs = map[string]string{}
+	/*
+		// Read in ~/.jq.
+		usr, err := user.Current()
+		if err != nil {
+			return "", fmt.Errorf("could not get user: %w", err)
+		}
+		dir := usr.HomeDir
+		file := filepath.Join(dir, ".jq")
+		modJqBytes, err := ioutil.ReadFile(file)
+		if err != nil {
+			if os.IsNotExist(err) {
+				// If the file doesn't exist, use an empty string instead of returning an error
+				modJqStr := ""
+				modQ, err := strToQuery(modJqStr)
+				if err != nil {
+					return "", fmt.Errorf("could not convert jq to query: %w", err)
+				}
+				_ = modQ.String()
+				return DoThing(jqStr, cfg_)
+			}
+			return "", fmt.Errorf("could not read file: %w", err)
+		}
+		modJqStr := string(modJqBytes)
+		modQ, err := strToQuery(modJqStr)
+		if err != nil {
+			return "", fmt.Errorf("could not convert jq to query: %w", err)
+		}
+		_ = modQ.String(a
+		// modFuncs = funcs
+		// modFuncDefs = funcDefs
+		// funcs = []string{}
+		// funcDefs = map[string]string{}
+	*/
 
 	initQ, err := strToQuery(jqStr)
 	if err != nil {
