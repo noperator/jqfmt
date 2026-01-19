@@ -103,6 +103,7 @@ func prtIdt(s *strings.Builder) {
 
 func brk(s *strings.Builder) {
 
+	trimTrailingSpace(s)
 	s.WriteByte('\n')
 	// idtStr := ""
 	// for i := 0; i < idt; i++ {
@@ -110,6 +111,15 @@ func brk(s *strings.Builder) {
 	// }
 	// s.WriteString(idtStr)
 	line += 1
+}
+
+func trimTrailingSpace(s *strings.Builder) {
+	str := s.String()
+	trimmed := strings.TrimRight(str, " \t")
+	if len(trimmed) != len(str) {
+		s.Reset()
+		s.WriteString(trimmed)
+	}
 }
 
 func descendsFrom(node string, ancestor string, parents []string) (bool, string) {
