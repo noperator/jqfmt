@@ -278,6 +278,62 @@ func TestMulti(t *testing.T) {
 	}
 }
 
+func TestTrailingWhitespace(t *testing.T) {
+	cfg = JqFmtCfg{
+		Arr: true,
+		Obj: true,
+		Ops: []string{
+			"pipe",
+			"comma",
+			"add",
+			"sub",
+			"mul",
+			"div",
+			"mod",
+			"eq",
+			"ne",
+			"gt",
+			"lt",
+			"ge",
+			"le",
+			"and",
+			"or",
+			"alt",
+			"assign",
+			"modify",
+			"updateAdd",
+			"updateSub",
+			"updateMul",
+			"updateDiv",
+			"updateMod",
+			"updateAlt",
+		},
+	}
+
+	inBytes, err := ioutil.ReadFile("testdata/trailing-space-in.jq")
+	if err != nil {
+		t.Fatalf("failed to open input file: %s", err)
+	}
+	in := string(inBytes)
+
+	wantBytes, err := ioutil.ReadFile("testdata/trailing-space-out.jq")
+	if err != nil {
+		t.Fatalf("failed to open want file: %s", err)
+	}
+	want := string(wantBytes)
+
+	out, err := DoThing(in, cfg)
+	if err != nil {
+		t.Fatalf("could not do thing: %s", err)
+	}
+
+	if !reflect.DeepEqual(want, out) {
+		t.Logf("want: %s", want)
+		t.Logf("have: %s", out)
+		t.Errorf("testdata/trailing-space-in.jq does not match testdata/trailing-space-out.jq")
+	}
+}
+
 func TestFuncDef(t *testing.T) {
 	cases := []struct {
 		inFile  string

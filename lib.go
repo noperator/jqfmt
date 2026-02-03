@@ -101,8 +101,22 @@ func prtIdt(s *strings.Builder) {
 	}
 }
 
-func brk(s *strings.Builder) {
+func trimTrailingSpace(s *strings.Builder) {
+	out := s.String()
+	if len(out) == 0 {
+		return
+	}
+	last := out[len(out)-1]
+	if last != ' ' && last != '\t' {
+		return
+	}
+	trimmed := strings.TrimRight(out, " \t")
+	s.Reset()
+	s.WriteString(trimmed)
+}
 
+func brk(s *strings.Builder) {
+	trimTrailingSpace(s)
 	s.WriteByte('\n')
 	// idtStr := ""
 	// for i := 0; i < idt; i++ {

@@ -1,3 +1,3 @@
-this / 
-    that / 
+this /
+    that /
     other

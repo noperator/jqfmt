@@ -1,3 +1,3 @@
-this or 
-    that or 
+this or
+    that or
     other
