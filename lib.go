@@ -166,20 +166,20 @@ func (e *Query) writeTo(s *strings.Builder) {
 		im.writeTo(s)
 		node = prevNode
 	}
-	// for i, fd := range e.FuncDefs {
-	// 	if _, ok := funcDefs[fd.Name]; !ok {
-	// 		funcDefs[fd.Name] = fd.String()
-	// 	}
-	// 	if i > 0 {
-	// 		s.WriteByte(' ')
-	// 	}
-	// 	node += ".FuncDefs"
-	// 	fd.writeTo(s)
-	// 	node = prevNode
-	// }
-	// if len(e.FuncDefs) > 0 {
-	// 	s.WriteByte(' ')
-	// }
+	for i, fd := range e.FuncDefs {
+		// if _, ok := funcDefs[fd.Name]; !ok {
+		// 	funcDefs[fd.Name] = fd.String()
+		// }
+		if i > 0 {
+			s.WriteByte(' ')
+		}
+		node += ".FuncDefs"
+		fd.writeTo(s)
+		node = prevNode
+	}
+	if len(e.FuncDefs) > 0 {
+		s.WriteByte(' ')
+	}
 	if e.Func != "" {
 		s.WriteString(e.Func)
 	} else if e.Term != nil {

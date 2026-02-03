@@ -278,6 +278,42 @@ func TestMulti(t *testing.T) {
 	}
 }
 
+func TestFuncDef(t *testing.T) {
+	cases := []struct {
+		inFile  string
+		outFile string
+	}{
+		{"testdata/funcdef-in.jq", "testdata/funcdef-out.jq"},
+	}
+
+	cfg = JqFmtCfg{}
+
+	for _, c := range cases {
+		inBytes, err := ioutil.ReadFile(c.inFile)
+		if err != nil {
+			t.Fatalf("failed to open input file: %s", err)
+		}
+		in := string(inBytes)
+
+		wantBytes, err := ioutil.ReadFile(c.outFile)
+		if err != nil {
+			t.Fatalf("failed to open want file: %s", err)
+		}
+		want := string(wantBytes)
+
+		out, err := DoThing(in, cfg)
+		if err != nil {
+			t.Fatalf("could not do thing: %s", err)
+		}
+
+		if !reflect.DeepEqual(want, out) {
+			t.Logf("want: %s", want)
+			t.Logf("have: %s", out)
+			t.Errorf("%s does not match %s", c.inFile, c.outFile)
+		}
+	}
+}
+
 /*
 func TestFunction(t *testing.T) {
 	cases := []struct {
