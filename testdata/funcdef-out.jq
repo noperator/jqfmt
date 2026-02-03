@@ -1,0 +1,1 @@
+def count_uplinks(leaves): reduce leaves[] as $leaf ({}; .[$leaf.leaf_switch] += 1); .[0] | map(map_values(count_uplinks(.)))
