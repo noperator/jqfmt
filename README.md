@@ -21,7 +21,15 @@ Side note: Ever tried Googling for "jq formatter"? Reading search results is a n
 
 ### Install
 
+With [Homebrew](https://brew.sh) via the [`jqfmt` package](https://formulae.brew.sh/formula/jqfmt):
+
+```shell
+brew install jqfmt
 ```
+
+With Go:
+
+```shell
 go install -v github.com/noperator/jqfmt/cmd/jqfmt@latest
 ```
 
